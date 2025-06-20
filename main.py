@@ -21,8 +21,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         
         # Buat tombol
         keyboard = [
-            [InlineKeyboardButton("▶️ PLAY NOW", url=f"https://t.me/share/url?url={WEBAPP_URL}")],
-            [InlineKeyboardButton("📚 LIVECHAT", url=f"https://t.me/share/url?url={LIVECHAT_URL}")]
+            [InlineKeyboardButton("▶️ PLAY NOW", url=f"tg://openmessage?url={WEBAPP_URL}")],
+            [InlineKeyboardButton("📚 LIVECHAT", url=f"tg://openmessage?url={LIVECHAT_URL}")]
         ]
         await update.message.reply_text(
             "Pilih tombol di bawah:",
