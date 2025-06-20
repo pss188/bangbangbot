@@ -6,8 +6,8 @@ from telegram.ext import Application, CommandHandler, CallbackQueryHandler, Cont
 TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")  # Ambil dari Railway Variables
 WEBHOOK_URL = os.getenv("https://diligent-charisma.railway.app", "")  # Optional untuk webhook
 PORT = int(os.getenv("PORT", 8443))  # Port default Railway
-WEBAPP_URL = "tg://rebrand.ly/bbtop"  # Ganti dengan URL website Anda
-LIVECHAT_URL = "tg://direct.lc.chat/19031753/"
+WEBAPP_URL = "https://rebrand.ly/bbtop"  # Ganti dengan URL website Anda
+LIVECHAT_URL = "https://direct.lc.chat/19031753/"
 # ========== HANDLER COMMAND ==========
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
@@ -21,8 +21,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         
         # Buat tombol
         keyboard = [
-            [InlineKeyboardButton("▶️ PLAY NOW", url=WEBAPP_URL)],
-            [InlineKeyboardButton("📚 LIVECHAT", url=LIVECHAT_URL)]
+            [InlineKeyboardButton("▶️ PLAY NOW", url=f"tg://openmessage?url={WEBAPP_URL}"))],
+            [InlineKeyboardButton("📚 LIVECHAT", url=f"tg://openmessage?url={LIVECHAT_URL}"))]
         ]
         await update.message.reply_text(
             "Pilih tombol di bawah:",
