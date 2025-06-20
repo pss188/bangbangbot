@@ -1,42 +1,66 @@
-from telegram.ext import Application, CommandHandler
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 import os
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.ext import Application, CommandHandler, ContextTypes
 
-TOKEN = os.getenv("7624457765:AAGWVct5zgwUDYg1JUzx8R8tzH2B3ETB3u0")
+# ========== CONFIGURASI ==========
+TOKEN = os.getenv("AAGWVct5zgwUDYg1JUzx8R8tzH2B3ETB3u0")  # Ambil dari Railway Variables
+WEBHOOK_URL = os.getenv("WEBHOOK_URL", "")  # Optional untuk webhook
+PORT = int(os.getenv("PORT", 8443))  # Port default Railway
+WEBAPP_URL = "https://rebrand.ly/bbtop"  # Ganti dengan URL website Anda
 
-async def start(update, context):
-    # Kirim gambar (pastikan path benar)
-    await update.message.reply_photo(
-        photo=open("assets/hamster.jpg", "rb"),
-        caption="🎮 Mainkan Sekarang Slot Paling Gacor Saat Ini!"
-    )
-    
-    # Buat tombol
-    keyboard = [[InlineKeyboardButton("▶️ PLAY NOW", url="https://rebrand.ly/bbtop")]]
-    await update.message.reply_text(
-        "Klik disini Untuk Lanjut Bermain!",
-        reply_markup=InlineKeyboardMarkup(keyboard)
-    )
+# ========== HANDLER COMMAND ==========
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    try:
+        # Kirim gambar dari folder assets
+        with open("assets/hamster.jpg", "rb") as photo:
+            await update.message.reply_photo(
+                photo=photo,
+                caption="🎮 **Play Hamster Gamedev** - Top-1 Business Simulator in Telegram!",
+                parse_mode="Markdown"
+            )
+        
+        # Buat tombol
+        keyboard = [
+            [InlineKeyboardButton("▶️ PLAY NOW", url=WEBAPP_URL)],
+            [InlineKeyboardButton("📚 Guide", callback_data="guide")]
+        ]
+        await update.message.reply_text(
+            "Pilih aksi di bawah:",
+            reply_markup=InlineKeyboardMarkup(keyboard)
+        )
+    except Exception as e:
+        print(f"Error di handler /start: {e}")
+        await update.message.reply_text("⚠️ Maaf, terjadi error. Silakan coba lagi.")
 
+async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+    await query.edit_message_text(text=f"Anda memilih: {query.data}")
+
+# ========== SETUP BOT ==========
 def main():
-    # Inisialisasi Application (ganti Updater)
+    if not TOKEN:
+        print("ERROR: Token tidak ditemukan!")
+        print("Pastikan TELEGRAM_BOT_TOKEN sudah di-set di Railway Variables")
+        exit(1)
+
+    # Buat aplikasi bot
     application = Application.builder().token(TOKEN).build()
     
     # Tambahkan handler
     application.add_handler(CommandHandler("start", start))
-    
-    # Untuk Railway (pakai webhook)
-    if "RAILWAY_ENVIRONMENT" in os.environ:
-        PORT = int(os.getenv("PORT", 8443))
-        APP_NAME = os.getenv("RAILWAY_PROJECT_NAME")
+    application.add_handler(CallbackQueryHandler(button_handler))
+
+    # Jalankan bot
+    if WEBHOOK_URL:  # Jika menggunakan webhook (production)
+        print("Running in WEBHOOK mode")
         application.run_webhook(
             listen="0.0.0.0",
             port=PORT,
-            url_path=TOKEN,
-            webhook_url=f"https://{diligent-charisma}.railway.app/{webhook}"
+            webhook_url=f"{WEBHOOK_URL}/{TOKEN}"
         )
-    else:
-        # Mode polling (development)
+    else:  # Mode polling (development)
+        print("Running in POLLING mode")
         application.run_polling()
 
 if __name__ == "__main__":
