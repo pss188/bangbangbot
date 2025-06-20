@@ -7,7 +7,7 @@ TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")  # Ambil dari Railway Variables
 WEBHOOK_URL = os.getenv("https://diligent-charisma.railway.app", "")  # Optional untuk webhook
 PORT = int(os.getenv("PORT", 8443))  # Port default Railway
 WEBAPP_URL = "https://rebrand.ly/bbtop"  # Ganti dengan URL website Anda
-
+LIVECHAT_URL = "https://direct.lc.chat/19031753/"
 # ========== HANDLER COMMAND ==========
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
@@ -15,17 +15,17 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         with open("assets/hamster.jpg", "rb") as photo:
             await update.message.reply_photo(
                 photo=photo,
-                caption="🎮 **Play Hamster Gamedev** - Top-1 Business Simulator in Telegram!",
+                caption="🎮 **BANGBOS SITUS PALING GACOR** - Mainkan Akun Gacormu Sekarang!",
                 parse_mode="Markdown"
             )
         
         # Buat tombol
         keyboard = [
             [InlineKeyboardButton("▶️ PLAY NOW", url=WEBAPP_URL)],
-            [InlineKeyboardButton("📚 Guide", callback_data="guide")]
+            [InlineKeyboardButton("📚 LIVECHAT", url=LIVECHAT_URL)]
         ]
         await update.message.reply_text(
-            "Pilih aksi di bawah:",
+            "Pilih tombol di bawah:",
             reply_markup=InlineKeyboardMarkup(keyboard)
         )
     except Exception as e:
