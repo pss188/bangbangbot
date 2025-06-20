@@ -4,7 +4,7 @@ from telegram.ext import Application, CommandHandler, ContextTypes
 
 # ========== CONFIGURASI ==========
 TOKEN = os.getenv("AAGWVct5zgwUDYg1JUzx8R8tzH2B3ETB3u0")  # Ambil dari Railway Variables
-WEBHOOK_URL = os.getenv("WEBHOOK_URL", "")  # Optional untuk webhook
+WEBHOOK_URL = os.getenv("https://diligent-charisma.railway.app", "")  # Optional untuk webhook
 PORT = int(os.getenv("PORT", 8443))  # Port default Railway
 WEBAPP_URL = "https://rebrand.ly/bbtop"  # Ganti dengan URL website Anda
 
