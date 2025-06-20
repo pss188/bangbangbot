@@ -1,6 +1,6 @@
 import os
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import Application, CommandHandler, ContextTypes
+from telegram.ext import Application, CommandHandler, CallbackQueryHandler, ContextTypes
 
 # ========== CONFIGURASI ==========
 TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")  # Ambil dari Railway Variables
